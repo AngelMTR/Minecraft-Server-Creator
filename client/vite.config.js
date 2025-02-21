@@ -6,7 +6,9 @@ import path from 'path'
 export default defineConfig({
     plugins: [
         preact(),
-        UnoCSS(),
+        UnoCSS({
+            preflights: false,
+        }),
     ],
     resolve: {
         alias: {

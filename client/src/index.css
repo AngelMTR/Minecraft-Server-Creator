@@ -20,6 +20,10 @@
   font-style: normal;
 }
 
+a, ul, li {
+  all: unset;
+}
+
 body {
   font-family: 'Minecraftia', sans-serif;
   margin: 0;

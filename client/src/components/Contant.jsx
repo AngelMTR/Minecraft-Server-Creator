@@ -18,7 +18,7 @@ const moduleRoutes = Object.keys(modules).map((modulePath) => {
 
 const Contant = () => {
     return (
-        <main className="flex-1 p-4">
+        <main className="flex-1 bg-gray-700 p-6 m-6 rounded-2xl shadow-2xl">
             <Router>
                 {moduleRoutes.map(({ routePath, Component }, index) => (
                     // رندر هر کامپوننت به همراه مسیرش
