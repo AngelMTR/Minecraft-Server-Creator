@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 const Dashboard = () => {
     return (
-        <div>
+        <div className="text-red-500">
             Dashboard
         </div>
     )

@@ -1,12 +1,12 @@
+import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
 import preact from '@preact/preset-vite'
 import path from 'path'
 
 export default defineConfig({
   plugins: [
       preact(),
-      tailwindcss(),
+      UnoCSS(),
   ],
   resolve: {
     alias: {
