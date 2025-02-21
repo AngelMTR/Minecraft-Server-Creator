@@ -7,11 +7,11 @@ const Home = () => {
         <>
             <div className="min-h-screen w-full">
                 <Header />
-                <div className="flex">
-                    <div className="bg-red-900 basis-1/10">
+                <div className="flex min-h-screen">
+                    <div className="bg-red-900 basis-1/10 p-4 flex flex-col items-center">
                         <Menu/>
                     </div>
-                    <div className="bg-blue-900 basis-9/10">
+                    <div className="bg-blue-900 basis-9/10 p-4">
                         Content
                     </div>
                 </div>
