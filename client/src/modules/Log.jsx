@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-const Log = () => {
+const Nav = () => {
     return (
         <div className="bg-gray-100 dark:bg-gray-800">
             Log
@@ -8,4 +8,4 @@ const Log = () => {
     )
 }
 
-export default Log
+export default Nav
