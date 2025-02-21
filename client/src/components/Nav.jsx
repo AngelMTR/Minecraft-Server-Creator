@@ -18,8 +18,7 @@ const Nav = () => {
                     <ul>
                         {moduleNames.map((item, index) => (
                             <li key={index} className="mb-2">
-                                {/* استفاده از 'to' به جای 'href' */}
-                                <Link className="text-blue-500 hover:underline" to={`/${item.toLowerCase()}`}>
+                                <Link className="" href={`/${item.toLowerCase()}`}>
                                     {item}
                                 </Link>
                             </li>

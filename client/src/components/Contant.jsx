@@ -1,35 +1,33 @@
 import { h } from 'preact';
-import {Router} from "preact-router";
-import Console from "@/modules/Console.jsx";
-import Log from "@/modules/Log.jsx";
-import Servers from "@/modules/Servers.jsx";
-import Access from "@/modules/Access.jsx";
-import Backups from "@/modules/Backups.jsx";
-import Files from "@/modules/Files.jsx";
-import Options from "@/modules/Options.jsx";
-import Players from "@/modules/Players.jsx";
-import Server from "@/modules/Server.jsx";
-import Software from "@/modules/Software.jsx";
-import Worlds from "@/modules/Worlds.jsx";
+import { Router } from 'preact-router';
+import NotFound from "@/components/NotFound.jsx";
+
+// بارگذاری داینامیک ماژول‌ها به صورت همزمان (eager)
+const modules = import.meta.glob('/src/modules/*.jsx', { eager: true });
+
+// استخراج اطلاعات مسیر و کامپوننت از فایل‌های موجود
+const moduleRoutes = Object.keys(modules).map((modulePath) => {
+    // استخراج اسم فایل (بدون پسوند .jsx)
+    const fileName = modulePath.split('/').pop().replace('.jsx', '');
+    // تعیین مسیر: مثلاً "Console" به "/console"
+    const routePath = `/${fileName.toLowerCase()}`;
+    // گرفتن کامپوننت (فرض بر این است که کامپوننت به صورت default export شده)
+    const Component = modules[modulePath].default;
+    return { routePath, Component };
+});
 
 const Contant = () => {
     return (
         <main className="flex-1 p-4">
             <Router>
-                <Access path="/access"/>
-                <Backups path="/backups"/>
-                <Console path="/console"/>
-                <Files path="/files"/>
-                <Log path="/log"/>
-                <Options path="/options"/>
-                <Players path="/players"/>
-                <Server path="/server"/>
-                <Servers path="/servers"/>
-                <Software path="/software"/>
-                <Worlds path="/worlds"/>
+                {moduleRoutes.map(({ routePath, Component }, index) => (
+                    // رندر هر کامپوننت به همراه مسیرش
+                    <Component path={routePath} key={index} />
+                ))}
+                <NotFound default />
             </Router>
         </main>
-    )
-}
+    );
+};
 
-export default Contant
+export default Contant;

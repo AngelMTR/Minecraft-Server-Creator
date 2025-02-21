@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 const Backups = () => {
     return (
-        <div className="bg-gray-100 dark:bg-gray-800">
+        <div>
             Backups
         </div>
     )

@@ -1,11 +1,11 @@
 import { h } from 'preact';
 
-const Worlds = () => {
+const Settings = () => {
     return (
         <div>
-            Worlds
+            Settings
         </div>
     )
 }
 
-export default Worlds
+export default Settings
