@@ -1,0 +1,48 @@
+:root {
+  font-family: 'Minecraftia', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: 'Minecraftia', sans-serif;
+  src: url('./assets/fonts/Minecraftia-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+a, ul, li {
+  all: unset;
+}
+
+body {
+  font-family: 'Minecraftia', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  /*display: flex;*/
+  /*place-items: center;*/
+  /*min-width: 320px;*/
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
