@@ -1,0 +1,14 @@
+### GET request to example server
+GET http://127.0.0.1:3000
+
+###
+
+### GET request to example server
+GET http://127.0.0.1:3000/start
+
+###
+
+### GET request to example server
+GET http://127.0.0.1:3000/stop
+
+###
