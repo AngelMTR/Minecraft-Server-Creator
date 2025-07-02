@@ -26,11 +26,15 @@ exports.sendCommand = (req, res) => {
 };
 
 exports.getLogs = (req, res) => {
-    const logPath = path.join(__dirname, '../logs/latest.log');
-    fs.readFile(logPath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ message: 'خطا در خواندن لاگ‌ها' });
-        }
-        res.json({ logs: data });
-    });
+    const logPath = path.join(__dirname, '../logs/latest.log'); // مسیر فایل لاگ
+    if (fs.existsSync(logPath)) {
+        fs.readFile(logPath, 'utf8', (err, data) => {
+            if (err) {
+                return res.status(500).json({ message: 'خطا در خواندن لاگ‌ها' });
+            }
+            res.json({ logs: data });
+        });
+    } else {
+        res.status(404).json({ message: 'فایل لاگ پیدا نشد' });
+    }
 };

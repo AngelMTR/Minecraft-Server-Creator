@@ -30,6 +30,7 @@ const App = () => {
             headers: { Authorization: `Bearer ${token}` }
         }).then(response => {
             console.log(response.data);
+            setStatus({ running: true });
         }).catch(err => console.error(err));
     };
 
@@ -38,6 +39,7 @@ const App = () => {
             headers: { Authorization: `Bearer ${token}` }
         }).then(response => {
             console.log(response.data);
+            setStatus({ running: false });
         }).catch(err => console.error(err));
     };
 
@@ -63,17 +65,13 @@ const App = () => {
                 <div>
                     <input type="text" placeholder="Username" />
                     <input type="password" placeholder="Password" />
-                    <button onClick={() => handleLogin('Dana', 'admin123')}>Login</button>
+                    <button onClick={() => handleLogin('admin', 'admin123')}>Login</button>
                 </div>
             ) : (
                 <div>
                     <h2>Server Status: {status ? (status.running ? 'Running' : 'Stopped') : 'Loading...'}</h2>
                     <button onClick={handleStartServer}>Start Server</button>
                     <button onClick={handleStopServer}>Stop Server</button>
-                    <div>
-                        <button onClick={handleViewLogs}>View Logs</button>
-                        <pre>{logs}</pre>
-                    </div>
                     <input
                         type="text"
                         placeholder="Enter Command"
@@ -81,6 +79,9 @@ const App = () => {
                         onChange={(e) => setCommand(e.target.value)}
                     />
                     <button onClick={handleSendCommand}>Send Command</button>
+
+                    <button onClick={handleViewLogs}>View Logs</button>
+                    <pre>{logs}</pre>
                 </div>
             )}
         </div>
