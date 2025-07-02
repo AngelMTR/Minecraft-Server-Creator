@@ -1,3 +1,4 @@
 .idea/
 node_modules/
-mc-panel-backend/mc/
+mc-panel-backend/mc/*
+!mc-panel-backend/mc/process.js
