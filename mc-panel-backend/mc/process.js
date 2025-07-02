@@ -1,6 +1,5 @@
 const { spawn } = require('child_process');
 let process = null;
-
 function start() {
     process = spawn('java', ['-Xms1024M', '-Xmx1024M', '-jar', 'server.jar', 'nogui'], {
         cwd: './mc',

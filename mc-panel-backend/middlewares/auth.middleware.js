@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
         req.user = payload;
+        // req.user = { username: 'Dana', iat: 1751420704, exp: 1751427904 };
         next();
     } catch {
         res.status(403).json({ message: 'توکن نامعتبر است.' });

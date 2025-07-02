@@ -1,4 +1,6 @@
 const mc = require('../mc/process');
+const fs = require('fs');
+const path = require('path');
 
 exports.startServer = (req, res) => {
     if (mc.isRunning()) return res.status(400).json({ message: 'سرور قبلاً روشن شده.' });
@@ -21,4 +23,14 @@ exports.sendCommand = (req, res) => {
     if (!mc.isRunning()) return res.status(400).json({ message: 'سرور اجرا نمی‌شود.' });
     mc.sendCommand(command);
     res.json({ message: `دستور '${command}' ارسال شد.` });
+};
+
+exports.getLogs = (req, res) => {
+    const logPath = path.join(__dirname, '../logs/latest.log');
+    fs.readFile(logPath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'خطا در خواندن لاگ‌ها' });
+        }
+        res.json({ logs: data });
+    });
 };
