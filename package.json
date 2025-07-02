@@ -17,8 +17,5 @@
     "url": "https://github.com/AngelMTR/Minecraft-Server-Creator/issues"
   },
   "homepage": "https://github.com/AngelMTR/Minecraft-Server-Creator#readme",
-  "description": "",
-  "dependencies": {
-    "express": "^5.1.0"
-  }
+  "description": ""
 }
