@@ -25,8 +25,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 
 ###
 
-POST http://localhost:3000/logout
+POST http://localhost:3000/auth/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbmdlbG1jLmRldkBnbWFpbC5jb20iLCJpYXQiOjE3NTY2NDg2NjAsImV4cCI6MTc1NjY1MjI2MH0._vQRhxu_JxIX05dl6FZwTJz_kmGhAXISj1PStEFuh-0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJwaXhlbGR1Y2sxMDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NjY1MjIzOSwiZXhwIjoxNzU2NjU1ODM5fQ.ZRGh4CX-TWtnypXdnDOi7iheiyy53RiJ07-H7vwAASQ
 
 ###

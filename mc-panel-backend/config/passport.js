@@ -15,17 +15,26 @@ export default function setupPassport() {
         try {
             const email = profile.emails[0].value;
 
-            let user = await pool.query("SELECT * FROM users_google WHERE google_id=$1", [profile.id]);
-            if (user.rows.length === 0) {
-                user = await pool.query(
-                    `INSERT INTO users_google 
-                    (google_id, email, name, given_name, family_name, picture, locale) 
-                    VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+            // بررسی وجود کاربر
+            let userQuery = await pool.query("SELECT * FROM users_google WHERE google_id=$1", [profile.id]);
+
+            let user;
+            if (userQuery.rows.length === 0) {
+                // اگر کاربر موجود نبود، اضافه کن و رکورد اول return بگیر
+                const insertQuery = await pool.query(
+                    `INSERT INTO users_google
+                         (google_id, email, name, given_name, family_name, picture, locale)
+                     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
                     [profile.id, email, profile.displayName, profile.name.givenName, profile.name.familyName, profile.photos[0].value, profile._json.locale]
                 );
-                user = user.rows[0];
+                user = insertQuery.rows[0];
             } else {
-                user = user.rows[0];
+                user = userQuery.rows[0];
+            }
+
+            // چک مطمئن بودن id قبل return
+            if (!user.id) {
+                return done(new Error("User ID missing in DB"), null);
             }
 
             return done(null, user);
