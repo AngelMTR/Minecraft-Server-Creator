@@ -1,5 +1,6 @@
 .idea/
 node_modules/
 mc-servers/*
+mc-cache/papermc_jars/
 mc-panel-backend/mc/*
 !mc-panel-backend/mc/process.js
