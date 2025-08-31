@@ -1,10 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const port = 3000;
+import express from 'express';
+import bodyParser from 'body-parser';
+import { Pool } from 'pg';
+import fetch from 'node-fetch';
+import amqplib from 'amqplib';
 
-app.use(express.json());
+const app = express();
+app.use(bodyParser.json());
+
+const db = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    password: '2001',
+    database: 'angelmc',
+    port: '5432'
+})
 
 app.use(cors({
     origin: 'http://localhost:3001', // آدرس منبع مجاز

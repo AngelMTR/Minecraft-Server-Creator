@@ -2,6 +2,7 @@
   "name": "minecraft-server-creator",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -17,5 +18,11 @@
     "url": "https://github.com/AngelMTR/Minecraft-Server-Creator/issues"
   },
   "homepage": "https://github.com/AngelMTR/Minecraft-Server-Creator#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "amqplib": "^0.10.9",
+    "body-parser": "^2.2.0",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.16.3"
+  }
 }
