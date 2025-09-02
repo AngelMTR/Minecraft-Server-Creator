@@ -1,5 +1,5 @@
 export const config = {
-    port: 4001,
+    port: 4000,
     cacheDir: "../mc_cache",
     serversDir: "../mc_servers",
     javaMemory: {
