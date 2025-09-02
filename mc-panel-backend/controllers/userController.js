@@ -1,6 +1,7 @@
 // import { pool } from "../db.js";
 
 export const getProfile = (req, res) => {
+    // console.log('getProfile req.user', req.user);
     res.json({ message: "سلام " + req.user.email });
 };
 

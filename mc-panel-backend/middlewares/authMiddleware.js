@@ -8,7 +8,6 @@ export const authMiddleware = async (req, res, next) => {
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-
         // چک کردن در user_sessions
         const result = await pool.query(
             "SELECT * FROM user_sessions WHERE jwt_token=$1 AND expires_at > NOW()",
