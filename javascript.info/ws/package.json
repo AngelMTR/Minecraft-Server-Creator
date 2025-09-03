@@ -1,7 +1,7 @@
 {
-  "name": "mc-daemon",
+  "name": "ws",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
-    "fs-extra": "^11.3.1",
-    "node-fetch": "^3.3.2"
+    "pg": "^8.16.3",
+    "ws": "^8.18.3"
   }
 }

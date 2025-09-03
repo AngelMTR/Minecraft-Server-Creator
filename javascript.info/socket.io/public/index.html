@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Products (Socket.IO + Postgres)</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 24px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: center; }
+        th { background: #111827; color: #fff; }
+        tr:nth-child(even){ background: #f9fafb; }
+        td[contenteditable="true"] { cursor: text; }
+        .status { cursor: pointer; font-weight: 700; }
+        .available { color: #065f46; }
+        .unavailable { color: #991b1b; }
+        .toolbar { display: flex; gap: 8px; align-items: center; }
+        .toolbar input, .toolbar select, .toolbar button { padding: 8px; }
+    </style>
+</head>
+<body>
+<h1>🧦 Products (Real-Time)</h1>
+
+<div class="toolbar">
+    <select id="size"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+    <input id="color" placeholder="Color" />
+    <input id="brand" placeholder="Brand" />
+    <select id="status"><option value="available">available</option><option value="unavailable">unavailable</option></select>
+    <button id="addBtn">➕ Add</button>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th><th>Size</th><th>Color</th><th>Brand</th><th>Status</th><th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+
+<script>
+    const socket = io();
+    const tbody = document.getElementById("tbody");
+
+    // Render
+    function renderProducts(products) {
+        tbody.innerHTML = "";
+        products.forEach(p => appendRow(p));
+    }
+
+    function appendRow(p) {
+        const tr = document.createElement("tr");
+        tr.dataset.id = p.id;
+        tr.innerHTML = `
+        <td>${p.id}</td>
+        <td contenteditable="true" data-field="size">${p.size}</td>
+        <td contenteditable="true" data-field="color">${p.color}</td>
+        <td contenteditable="true" data-field="brand">${p.brand}</td>
+        <td class="status ${p.status}" title="Toggle">${p.status}</td>
+        <td><button class="deleteBtn">Delete</button></td>
+      `;
+        tbody.appendChild(tr);
+    }
+
+    function updateRow(p) {
+        const tr = tbody.querySelector(`tr[data-id='${p.id}']`);
+        if (!tr) return appendRow(p);
+        tr.children[1].textContent = p.size;
+        tr.children[2].textContent = p.color;
+        tr.children[3].textContent = p.brand;
+        const st = tr.children[4];
+        st.textContent = p.status;
+        st.className = `status ${p.status}`;
+    }
+
+    function removeRow(id) {
+        const tr = tbody.querySelector(`tr[data-id='${id}']`);
+        if (tr) tr.remove();
+    }
+
+    // Socket listeners
+    socket.on("products", (list) => renderProducts(list));
+    socket.on("add", (p) => appendRow(p));
+    socket.on("update", (p) => updateRow(p));
+    socket.on("delete", (id) => removeRow(id));
+    socket.on("reorder", () => {
+        // سرور بلافاصله "products" هم می‌فرسته، پس اینجا کار خاصی لازم نیست
+    });
+
+    // Events: inline edit / toggle / delete
+    tbody.addEventListener("click", (e) => {
+        const tr = e.target.closest("tr");
+        if (!tr) return;
+        const id = tr.dataset.id;
+
+        if (e.target.classList.contains("status")) {
+            socket.emit("toggleStatus", { id });
+        } else if (e.target.classList.contains("deleteBtn")) {
+            socket.emit("deleteProduct", { id });
+        }
+    });
+
+    tbody.addEventListener("blur", (e) => {
+        const td = e.target;
+        if (td.dataset.field) {
+            const tr = td.closest("tr");
+            const id = tr.dataset.id;
+            const field = td.dataset.field;
+            const value = td.textContent.trim();
+            socket.emit("updateProduct", { id, field, value });
+        }
+    }, true);
+
+    // Add product
+    document.getElementById("addBtn").addEventListener("click", () => {
+        const size = document.getElementById("size").value;
+        const color = document.getElementById("color").value.trim() || "Black";
+        const brand = document.getElementById("brand").value.trim() || "Nike";
+        const status = document.getElementById("status").value || "available";
+        socket.emit("addProduct", { size, color, brand, status });
+        document.getElementById("color").value = "";
+        document.getElementById("brand").value = "";
+    });
+
+    // Drag & Drop
+    new Sortable(tbody, {
+        animation: 150,
+        onEnd: () => {
+            const order = Array.from(tbody.querySelectorAll("tr")).map(tr => tr.dataset.id);
+            socket.emit("reorderProducts", { order });
+        }
+    });
+</script>
+</body>
+</html>

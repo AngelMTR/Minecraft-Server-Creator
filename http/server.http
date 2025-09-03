@@ -13,6 +13,7 @@ Content-Type: application/json
 GET http://localhost:3000/mc/status
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmEiLCJpYXQiOjE3NTE0MjA3MDQsImV4cCI6MTc1MTQyNzkwNH0.ymszJVHj3rlAJyUDOudedSOHIvYhLzs66FsvU_kSKfg
+
 ###
 
 ###
@@ -28,5 +29,37 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 POST http://localhost:3000/auth/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJwaXhlbGR1Y2sxMDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NjY1MjIzOSwiZXhwIjoxNzU2NjU1ODM5fQ.ZRGh4CX-TWtnypXdnDOi7iheiyy53RiJ07-H7vwAASQ
+
+###
+
+###
+GET http://localhost:6000/products
+
+###
+
+###
+POST http://localhost:6000/products
+Content-Type: application/json
+
+{
+    "size": "M",
+    "color": "Red",
+    "brand": "Zara"
+}
+
+###
+
+###
+PUT http://localhost:6000/products
+
+###
+
+###
+PATCH http://localhost:6000/products
+
+###
+
+###
+DELETE http://localhost:6000/products/13
 
 ###

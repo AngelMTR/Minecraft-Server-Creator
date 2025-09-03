@@ -1,0 +1,67 @@
+### 1️⃣ ساخت یک وب‌سرور جدید
+POST http://localhost:7000/servers
+Content-Type: application/json
+
+{
+  "name": "api1",
+  "port": 8081
+}
+
+###
+POST http://localhost:7000/servers
+Content-Type: application/json
+
+{
+  "name": "api2",
+  "port": 8082
+}
+
+###
+POST http://localhost:7000/servers
+Content-Type: application/json
+
+{
+  "name": "api3",
+  "port": 8083
+}
+
+### 2️⃣ گرفتن لیست همه سرورها
+GET http://localhost:7000/servers
+###
+GET http://localhost:7000/servers/1/status
+###
+GET http://localhost:7000/servers/2/status
+###
+GET http://localhost:7000/servers/3/status
+###
+POST http://localhost:7000/servers/1/stop
+###
+POST http://localhost:7000/servers/2/stop
+###
+POST http://localhost:7000/servers/1/start
+###
+POST http://localhost:7000/servers/2/start
+###
+POST http://localhost:7000/servers/1/restart
+###
+POST http://localhost:7000/servers/2/restart
+###
+DELETE http://localhost:7000/servers/1
+###
+DELETE http://localhost:7000/servers/2
+###
+DELETE http://localhost:7000/servers/10
+###
+POST http://localhost:7000/servers
+Content-Type: application/json
+
+{
+  "name": "api1",
+  "port": 8081
+}
+###
+GET http://localhost:7000/servers
+###
+POST http://localhost:7000/servers/stopAll
+###
+POST http://localhost:7000/servers/startAll

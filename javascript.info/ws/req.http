@@ -1,0 +1,19 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=WebStorm
+
+###
+
+DELETE http://localhost:5000/products/2
+
+###
+
+###
+
+PUT http://localhost:5000/products/1
+
+Content-Type: application/json
+body: {
+    {"size":"L","color":"Blue","brand":"Adidas","status":"unavailable"}
+}
+###

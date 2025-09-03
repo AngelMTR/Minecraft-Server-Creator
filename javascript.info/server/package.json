@@ -1,11 +1,10 @@
 {
-  "name": "mc-daemon",
+  "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +12,9 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
-    "fs-extra": "^11.3.1",
-    "node-fetch": "^3.3.2"
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

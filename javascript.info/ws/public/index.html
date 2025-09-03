@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Products</title>
+    <style>
+        table { border-collapse: collapse; width: 90%; margin: auto; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+        th { background-color: #555; color: white; }
+        td[contenteditable] { cursor: text; }
+        .status { cursor: pointer; font-weight: bold; }
+        .available { background-color: #c8f7c5; }
+        .unavailable { background-color: #f7c5c5; }
+        form { text-align: center; margin: 20px; }
+        input, select { padding: 5px; margin: 0 5px; }
+        button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+<h1 style="text-align:center;">Products</h1>
+
+<form id="addForm">
+    <select id="size"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+    <input type="text" id="color" placeholder="Color" required>
+    <input type="text" id="brand" placeholder="Brand" required>
+    <select id="status"><option value="available">available</option><option value="unavailable">unavailable</option></select>
+    <button type="submit">Add Product</button>
+</form>
+
+<table id="productsTable">
+    <thead>
+    <tr><th>ID</th><th>Size</th><th>Color</th><th>Brand</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+    const tableBody = document.querySelector("#productsTable tbody");
+    const ws = new WebSocket(`ws://${location.host}`);
+
+    // Load products
+    async function loadProducts() {
+        const res = await fetch("/products");
+        const products = await res.json();
+        tableBody.innerHTML = "";
+        products.forEach(addRow);
+    }
+
+    // Add row
+    function addRow(product) {
+        const tr = document.createElement("tr");
+        tr.dataset.id = product.id;
+        tr.innerHTML = `
+    <td>${product.id}</td>
+    <td contenteditable="true" class="editable" data-field="size">${product.size}</td>
+    <td contenteditable="true" class="editable" data-field="color">${product.color}</td>
+    <td contenteditable="true" class="editable" data-field="brand">${product.brand}</td>
+    <td class="status ${product.status}">${product.status}</td>
+    <td><button class="delete">Delete</button></td>
+  `;
+        tableBody.appendChild(tr);
+
+        tr.querySelector(".status").addEventListener("click", () => toggleStatus(product.id));
+        tr.querySelector(".delete").addEventListener("click", () => deleteProduct(product.id));
+
+        // Inline edit listener
+        tr.querySelectorAll(".editable").forEach(td => {
+            td.addEventListener("blur", () => {
+                const field = td.dataset.field;
+                const value = td.textContent;
+                updateField(product.id, { [field]: value });
+            });
+        });
+    }
+
+    // Update row
+    function updateRow(product) {
+        const tr = tableBody.querySelector(`tr[data-id='${product.id}']`);
+        if (!tr) return addRow(product);
+        tr.querySelector("[data-field='size']").textContent = product.size;
+        tr.querySelector("[data-field='color']").textContent = product.color;
+        tr.querySelector("[data-field='brand']").textContent = product.brand;
+        const statusTd = tr.querySelector(".status");
+        statusTd.textContent = product.status;
+        statusTd.className = `status ${product.status}`;
+    }
+
+    // Delete row
+    function deleteRow(id) {
+        const tr = tableBody.querySelector(`tr[data-id='${id}']`);
+        if (tr) tr.remove();
+    }
+
+    // Toggle status
+    async function toggleStatus(id) {
+        await fetch(`/products/${id}/update`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({status: tableBody.querySelector(`tr[data-id='${id}'] .status`).textContent === "available" ? "unavailable" : "available"})
+        });
+    }
+
+    // Update field inline
+    async function updateField(id, fields) {
+        await fetch(`/products/${id}/update`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(fields)
+        });
+    }
+
+    // Delete product
+    async function deleteProduct(id) {
+        await fetch(`/products/${id}`, { method: "DELETE" });
+    }
+
+    // WebSocket listener
+    ws.onmessage = event => {
+        const data = JSON.parse(event.data);
+        switch(data.type){
+            case "add": addRow(data.product); break;
+            case "update": updateRow(data.product); break;
+            case "delete": deleteRow(data.id); break;
+        }
+    };
+
+    // Add form
+    document.querySelector("#addForm").addEventListener("submit", async e => {
+        e.preventDefault();
+        const size = document.querySelector("#size").value;
+        const color = document.querySelector("#color").value;
+        const brand = document.querySelector("#brand").value;
+        const status = document.querySelector("#status").value;
+        await fetch("/products", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({size, color, brand, status})
+        });
+        document.querySelector("#color").value = "";
+        document.querySelector("#brand").value = "";
+    });
+
+    // Drag & Drop using Sortable.js
+    new Sortable(tableBody, {
+        animation: 150,
+        onEnd: async () => {
+            const order = Array.from(tableBody.querySelectorAll("tr")).map(tr => Number(tr.dataset.id));
+            await fetch("/products/reorder", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ order })
+            });
+        }
+    });
+
+    loadProducts();
+</script>
+</body>
+</html>
